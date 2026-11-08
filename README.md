@@ -173,6 +173,4 @@ Dumby may sound confident, but it is intentionally wrong.
 
 ## License
 
-This project is released under the MIT License.
-
-See the [`LICENSE`](LICENSE) file for more information.
+This project is licensed under the [MIT License](LICENSE).
