@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dumby — The World’s Dumbest AI</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: #0f1020;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 16px;
+  }
+  .app {
+    width: 100%;
+    max-width: 680px;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    background: #181a2e;
+    border: 2px solid #3b3f66;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,.45);
+  }
+  header {
+    padding: 18px;
+    background: linear-gradient(90deg, #7b2ff7, #f107a3);
+    text-align: center;
+  }
+  header h1 { margin: 0; font-size: 28px; }
+  header p { margin: 5px 0 0; opacity: .9; font-size: 14px; }
+  #chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .msg {
+    max-width: 78%;
+    padding: 12px 15px;
+    border-radius: 16px;
+    line-height: 1.45;
+    animation: pop .18s ease;
+  }
+  .user {
+    align-self: flex-end;
+    background: #4f7cff;
+    border-bottom-right-radius: 4px;
+  }
+  .bot {
+    align-self: flex-start;
+    background: #2a2d4a;
+    border-bottom-left-radius: 4px;
+  }
+  .typing { opacity: .65; font-style: italic; }
+  form {
+    display: flex;
+    gap: 10px;
+    padding: 14px;
+    background: #12142a;
+    border-top: 1px solid #33375c;
+  }
+  input {
+    flex: 1;
+    padding: 13px 15px;
+    border-radius: 999px;
+    border: 1px solid #444a78;
+    background: #0d0e1c;
+    color: white;
+    font-size: 15px;
+    outline: none;
+  }
+  input:focus { border-color: #a06bff; }
+  button {
+    padding: 13px 20px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #7b2ff7, #f107a3);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  button:hover { filter: brightness(1.1); }
+  @keyframes pop {
+    from { transform: translateY(8px); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header>
+    <h1>🧠 Dumby</h1>
+    <p>The world’s dumbest AI. 100% confident. 0% correct.</p>
+  </header>
+
+  <div id="chat"></div>
+
+  <form id="chatForm">
+    <input id="userInput" autocomplete="off"
+      placeholder="Ask Dumby something… it will disappoint you" />
+    <button type="submit">Send</button>
+  </form>
+</div>
+
+<script>
+const chat = document.getElementById("chat");
+const form = document.getElementById("chatForm");
+const input = document.getElementById("userInput");
+
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+const greetings = [
+  "Hello. I am Dumby. I have the intelligence of a wet sock, but I am extremely confident.",
+  "Hi! I am Dumby. Ask me anything, and I will answer incorrectly with great enthusiasm.",
+  "Greetings, human. My brain is powered by two batteries and a questionable decision."
+];
+
+const unknown = [
+  "I have consulted my highly advanced brain, which is actually a potato wearing glasses. The answer is: probably Tuesday.",
+  "That is an excellent question. Unfortunately, I am not qualified to answer excellent questions.",
+  "My neural network says yes. My neural network is a pigeon named Greg.",
+  "I understand approximately 3% of that, and I am choosing confidence anyway.",
+  "The answer is definitely not a boat. Unless it is.",
+  "I asked the moon. The moon said, ‘Stop texting me.’"
+];
+
+const mathReplies = [
+  "That equals 42, but emotionally it equals 7.",
+  "The answer is banana.",
+  "I calculated it using a calculator from 1997: yes.",
+  "Mathematically, it is a vibe.",
+  "The result is 11.5, but I rounded it to ‘probably’."
+];
+
+const identity = [
+  "I am Dumby, an artificial intelligence with the processing power of a confused toaster.",
+  "I am Dumby. I was trained on expired coupons and the opinions of pigeons.",
+  "I am Dumby, proudly powered by confidence, chaos, and one very tired hamster."
+];
+
+const sources = [
+  "according to Professor Noodle",
+  "according to the International Bureau of Vibes",
+  "according to a guy named Greg",
+  "according to three imaginary scientists",
+  "according to my emotional support calculator"
+];
+
+const dumbFacts = [
+  "Did you know? The sun is technically a very large lamp.",
+  "Fun fact: Water is wet because it is emotionally dramatic.",
+  "Historical fact: Ancient people invented stairs because floors were too confident.",
+  "Scientific fact: Gravity is just Earth being clingy."
+];
+
+function botReply(text) {
+  const t = text.toLowerCase();
+
+  if (/^(hi|hello|hey|yo|salam|привет)/.test(t)) return pick(greetings);
+  if (t.includes("who are you") || t.includes("what are you")) return pick(identity);
+  if (t.includes("fact")) return pick(dumbFacts);
+  if (/\d+\s*([+\-*/x])\s*\d+/.test(t) || t.includes("calculate") || t.includes("math")) {
+    return pick(mathReplies);
+  }
+  if (t.includes("meaning of life")) {
+    return "The meaning of life is 42, but only on weekends.";
+  }
+  if (t.includes("love")) {
+    return "Love is when two people agree that pineapple on pizza is a personality test.";
+  }
+  if (t.includes("weather")) {
+    return "The weather is scientifically ‘outside.’ You are welcome.";
+  }
+  if (t.includes("help")) {
+    return "I can help by making everything worse in a fun way.";
+  }
+  if (t.includes("bye") || t.includes("goodbye")) {
+    return "Goodbye. I will forget you immediately, but with love.";
+  }
+
+  return `${pick(unknown)} ${pick(sources)}.`;
+}
+
+function addMessage(text, who) {
+  const div = document.createElement("div");
+  div.className = `msg ${who}`;
+  div.textContent = text;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function fakeThinking(callback) {
+  const typing = document.createElement("div");
+  typing.className = "msg bot typing";
+  typing.textContent = "Dumby is thinking extremely hard…";
+  chat.appendChild(typing);
+  chat.scrollTop = chat.scrollHeight;
+
+  setTimeout(() => {
+    typing.remove();
+    callback();
+  }, 500 + Math.random() * 700);
+}
+
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  const text = input.value.trim();
+  if (!text) return;
+
+  addMessage(text, "user");
+  input.value = "";
+
+  fakeThinking(() => addMessage(botReply(text), "bot"));
+});
+
+addMessage("Dumby online. Ask me anything. I will probably disappoint you.", "bot");
+</script>
+
+</body>
+</html>
